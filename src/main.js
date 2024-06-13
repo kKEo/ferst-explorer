@@ -1,5 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu, Tray, screen } = require('electron');
 const path = require('node:path');
+
+const windows = {}
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -8,24 +10,60 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
-  });
+  // const mainWindow = new BrowserWindow({
+  //   width: 1024,
+  //   height: 800,
+  //   webPreferences: {
+  //     preload: path.join(__dirname, 'preload.js'),
+  //   },
+  // });
 
-  // and load the index.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
-  }
+  // // and load the index.html of the app.
+  // if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+  //   mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  // } else {
+  //   mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  // }
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
+
+function openWindow(id) {
+  const webPreferences = {
+    nodeIntegration: true,
+    contextIsolation: false
+  }
+  const options = { width: 1800, height: 600, webPreferences }
+  let window = new BrowserWindow(options)
+
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    window.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  } else {
+    window.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  }
+
+  window.on('close', () => { window = null })
+  window.webContents.openDevTools()
+  let bounds = window.getBounds()
+  bounds.x = -2000
+  window.setBounds(bounds)
+  // window.loadFile("apps/"+id+"/index.html")
+  return window
+}
+
+function showSettings() {
+  const id = 'azure-mgnt'
+  if (windows[id] === undefined || windows[id].isDestroyed()) {
+    console.log('Creating new app: '+id)
+    windows[id] = openWindow(id)
+  }
+  windows[id].show()
+}
+
+function showExplorer() {
+
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -40,7 +78,20 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  let tray = new Tray('icons/gear.png')
+  tray.setToolTip('')
+
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Explorer', click: showSettings},
+     {label: 'Settings', click: showSettings}
+  ])
+
+  tray.setContextMenu(contextMenu)
 });
+
+
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
