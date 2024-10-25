@@ -15,11 +15,13 @@ function openWindow(application_id) {
     nodeIntegration: true,
     contextIsolation: false
   }
+  const windowWidth = 1600
+  const windowHeight = 800
   const point = screen.getCursorScreenPoint()
   const { width, height, x, y } = screen.getDisplayNearestPoint(point).workArea;
   const options = { 
-    width: 1200, 
-    height: 600, 
+    width: windowWidth, 
+    height: windowHeight, 
     webPreferences 
   }
   let window = new BrowserWindow(options)
@@ -38,8 +40,8 @@ function openWindow(application_id) {
   
 
   let bounds = window.getBounds()
-  bounds.x = x + (width - 1200) / 2 
-  bounds.y = y + (height - 600) / 2
+  bounds.x = x + (width - windowWidth) / 2 
+  bounds.y = y + (height - windowHeight) / 2
   window.setBounds(bounds)
 
 
