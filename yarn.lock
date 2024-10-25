@@ -520,6 +520,11 @@
     "@types/node" "*"
     "@types/responselike" "^1.0.0"
 
+"@types/drawflow@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.npmjs.org/@types/drawflow/-/drawflow-0.0.12.tgz"
+  integrity sha512-jza202kQKclxkEGxFGVdfT+lybft+BqTVxPA5cTuJO9z4gR4D9KT8Qxwd5xwX/NX1RUlXmtVGOtsy+0svRjPhQ==
+
 "@types/estree@1.0.5":
   version "1.0.5"
   resolved "https://registry.npmjs.org/@types/estree/-/estree-1.0.5.tgz"
@@ -1254,6 +1259,11 @@ dir-compare@^4.2.0:
   dependencies:
     minimatch "^3.0.5"
     p-limit "^3.1.0 "
+
+drawflow@^0.0.60:
+  version "0.0.60"
+  resolved "https://registry.npmjs.org/drawflow/-/drawflow-0.0.60.tgz"
+  integrity sha512-UGj1+1DnWCVY6vJXBb6Ayt7KpPINBGqncVqpYDumVeBdIKxlBGn0tksp2yciVzQjkYsjFwMMDEdoVyWzUa2wkA==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"

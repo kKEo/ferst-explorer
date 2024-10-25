@@ -8,47 +8,41 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
-  // Create the browser window.
-  // const mainWindow = new BrowserWindow({
-  //   width: 1024,
-  //   height: 800,
-  //   webPreferences: {
-  //     preload: path.join(__dirname, 'preload.js'),
-  //   },
-  // });
+const createWindow = () => { /* no window is opened on the startup, open app in tray */ };
 
-  // // and load the index.html of the app.
-  // if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-  //   mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-  // } else {
-  //   mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
-  // }
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
-};
-
-function openWindow(id) {
+function openWindow(application_id) {
   const webPreferences = {
     nodeIntegration: true,
     contextIsolation: false
   }
-  const options = { width: 1800, height: 600, webPreferences }
+  const point = screen.getCursorScreenPoint()
+  const { width, height, x, y } = screen.getDisplayNearestPoint(point).workArea;
+  const options = { 
+    width: 1200, 
+    height: 600, 
+    webPreferences 
+  }
   let window = new BrowserWindow(options)
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    console.log("Load url: ", MAIN_WINDOW_VITE_DEV_SERVER_URL)
     window.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    window.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    const file = path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    console.log("Load file: ", file)
+    window.loadFile(file);
   }
 
   window.on('close', () => { window = null })
   window.webContents.openDevTools()
+  
+
   let bounds = window.getBounds()
-  bounds.x = -2000
+  bounds.x = x + (width - 1200) / 2 
+  bounds.y = y + (height - 600) / 2
   window.setBounds(bounds)
-  // window.loadFile("apps/"+id+"/index.html")
+
+
   return window
 }
 
@@ -65,9 +59,6 @@ function showExplorer() {
 
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
 
