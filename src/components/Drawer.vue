@@ -3,14 +3,24 @@
       <el-button type="primary" :icon="Edit">I am ElButton</el-button>
       <el-button type="danger" :icon="Delete" @click="deleteItem"></el-button>
 
+      <el-button type="primary" :icon="Tools" @click="switchModule"></el-button>
+      <el-button type="primary" :icon="ArrowUp" @click="loadModule"></el-button>
+      
+
       <el-tree style="max-width: 600px" :data="data" :props="defaultProps" @node-click="handleNodeClick" />
     </div>
 </template>
 
 <script lang="ts" setup>
 
-import { Edit, Delete, Tools } from '@element-plus/icons-vue'
+import { Edit, Delete, Tools, ArrowUp } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+
+import { getCurrentInstance } from 'vue';
+
+import {convert, example} from '../models/component'
+
+const instance = getCurrentInstance();
 
 
 const deleteItem = () => {
@@ -19,6 +29,18 @@ const deleteItem = () => {
     grouping: true,
     type: 'error'
   })
+}
+
+function switchModule() {
+  const editor = instance?.appContext.config.globalProperties.$df;
+  const modules = Object.keys(editor.value.drawflow.drawflow)
+  const nextModule = modules[(modules.indexOf(editor.value.module)+1)%modules.length]
+  editor.value.changeModule(nextModule)
+}
+
+function loadModule() {
+  const editor = instance?.appContext.config.globalProperties.$df;
+  editor.value.drawflow.drawflow['Example'] = convert(example)
 }
 
 interface Tree {
