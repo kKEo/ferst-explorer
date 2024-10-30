@@ -44,6 +44,28 @@ export function convert(w: Workflow) {
                     "pos_y": el.position.y
                 }
             }
+    for (const conn of w.connections) {
+        module.data[conn.from].inputs = {
+            "input_1" : {
+                "connections": [
+                    {
+                        "node": conn.from,
+                        "input": "output_1"
+                    }
+                ]
+            }
+        }
+        module.data[conn.to].outputs = {
+            "output_1": {
+                "connections": [
+                    {
+                        "node": conn.to,
+                        "output": "input_1"
+                    }
+                ]
+            }
+        }
+    }
     return module
 }
 

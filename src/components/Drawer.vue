@@ -40,7 +40,9 @@ function switchModule() {
 
 function loadModule() {
   const editor = instance?.appContext.config.globalProperties.$df;
-  editor.value.drawflow.drawflow['Example'] = convert(example)
+  const module = convert(example)
+  console.log("module: ", module)
+  editor.value.drawflow.drawflow['Example'] = module 
 }
 
 interface Tree {
