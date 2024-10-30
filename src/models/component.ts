@@ -45,7 +45,7 @@ export function convert(w: Workflow) {
                 }
             }
     for (const conn of w.connections) {
-        module.data[conn.from].inputs = {
+        module.data[conn.to].inputs = {
             "input_1" : {
                 "connections": [
                     {
@@ -55,7 +55,7 @@ export function convert(w: Workflow) {
                 ]
             }
         }
-        module.data[conn.to].outputs = {
+        module.data[conn.from].outputs = {
             "output_1": {
                 "connections": [
                     {
@@ -72,10 +72,12 @@ export function convert(w: Workflow) {
 export const example: Workflow = {
     objects: [
         { id: "1", label: "Rectangle", type: "rectangle", position: { x: 100, y: 200 }, size: { width: 100, height: 50 }, color: "blue" },
-        { id: "2", label: "Circle", type: "circle", position: { x: 350, y: 200 }, size: { width: 50, height: 50 }, color: "red" }
+        { id: "2", label: "Circle", type: "circle", position: { x: 350, y: 200 }, size: { width: 50, height: 50 }, color: "red" },
+        { id: "3", label: "Triangle", type: "circle", position: { x: 350, y: 400 }, size: { width: 50, height: 50 }, color: "red" }
     ],
     connections: [
-        { id: "c1", from: "1", to: "2", color: "black", thickness: 2, arrowHead: true }
+        { id: "c1", from: "1", to: "2", color: "black", thickness: 2, arrowHead: true },
+        { id: "c2", from: "1", to: "3", color: "black", thickness: 2, arrowHead: true }
     ]
 };
 
