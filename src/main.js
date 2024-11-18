@@ -16,7 +16,7 @@ function openWindow(application_id) {
     contextIsolation: false
   }
   const windowWidth = 1600
-  const windowHeight = 800
+  const windowHeight = 1200
   const point = screen.getCursorScreenPoint()
   const { width, height, x, y } = screen.getDisplayNearestPoint(point).workArea;
   const options = { 
